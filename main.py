@@ -20,6 +20,9 @@ def check_auth():
     if user["user"] != session.get("user"):
         return False
     return True
+@app.route("/")
+def main():
+  return redirect("https://nalin1304.github.io/HealthTrack/HealthTrack%20Front%20end/")
 
 @app.route("/dashboard")
 def dashboard():
