@@ -33,13 +33,13 @@ def dashboard():
     age_value = request.args.get("age")
     search_value = request.args.get("search")
     if class_value:
-        students = student_data.find({"class": class_value})
+        students = student_data.find({"class": class_value}).sort("name")
     elif age_value:
-        students = student_data.find({"age": age_value})
+        students = student_data.find({"age": age_value}).sort("name")
     elif search_value:
         students = student_data.find({"name": {"$regex": search_value, "$options": "i"}}).sort("name")
     else:
-        students = student_data.find()
+        students = student_data.find().sort("name")
     return render_template("main.html", students=list(students))
 
 @app.route("/auth", methods=["GET","POST"])
