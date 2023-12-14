@@ -256,7 +256,21 @@
       margin-top: 20px;
     }
     </style>
-    <script>
+      <script src="https://unpkg.com/@popperjs/core@2"></script>
+      <script src="https://unpkg.com/tippy.js@6"></script>
+      <script>
+        tippy("#bmi-category", {
+          content: "Normal range: 18.5-24.9",
+          placement: "right"        
+        })
+        tippy("#pulse", {
+          content: "Normal range: 60-100",
+          placement: "right"        
+        })
+      tippy("#blood-pressure", {
+          content: "Normal range: 120/80 - 90/60",
+          placement: "right"        
+        })
       if (`{{student["bmi_category"]}}`=="Underweight") {
       document.getElementsByClassName("bmi-category-value")[0].style.color = "#FF0000";
       var data = {
@@ -345,6 +359,17 @@
       data: data,
       options: options
     });
+        if (`{{student["blood"]["pulse_category"]}}` == "High") {
+          document.getElementById("pulse").style.color = "#FF0000";
+        }
+        else if (`{{student["blood"]["pulse_category"]}}` == "Low") {
+          document.getElementById("pulse").style.color = "#FF0000";
+        }
+        if (`{{student["blood"]["bp_category"]}}` == "High") {
+          document.getElementById("blood-pressure").style.color = "#FF0000";
+        }
+        else if (`{{student["blood"]["bp_category"]}}` == "Low") {
+          document.getElementById("blood-pressure").style.color = "#FF0000";
+        }
   </script>
-    </script>
 </html>
