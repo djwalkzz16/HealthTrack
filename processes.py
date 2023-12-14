@@ -113,10 +113,10 @@ def recommendations():
     bp = student["blood"]["blood_pressure"]
     bp = bp.split("/")
     bp_category = "Normal"
-    if (int(bp[0]) >= 120) or (int(bp[1]) > 80):
+    if (int(bp[0]) >= 120) or (int(bp[1]) >= 80):
       recommendation.append(r["high_bp"]["recommendation"])
       bp_category = "High"
-    elif (int(bp[0]) < 90) or (int(bp[1]) < 60):
+    elif (int(bp[0]) <= 90) or (int(bp[1]) <= 60):
       recommendation.append(r["low_bp"]["recommendation"])
       bp_category = "Low"
     if student["recommendation"] != []:
