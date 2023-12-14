@@ -22,24 +22,28 @@ def bmi_calculator():
     bmi_category = ""
     if bmi < 18.5:
       bmi_category = "Underweight"
-      recommendation = r["underweight"]["recommendation"]
+      recommendation = [r["underweight"]["recommendation"]]
     elif bmi >= 18.5 and bmi <= 24.9:
       bmi_category = "Normal"
-      recommendation = None
+      recommendation = []
     elif bmi >= 25 and bmi <= 29.9:
       bmi_category = "Overweight"
-      recommendation = r["overweight"]["recommendation"]
+      recommendation = [r["overweight"]["recommendation"]]
     elif bmi >= 30:
       bmi_category = "Obese"
-      recommendation = r["obese"]["recommendation"]
+      recommendation = [r["obese"]["recommendation"]]
     old_recommendation = student["recommendation"]
-    if old_recommendation == [recommendation]:
+    if recommendation != []:
+      for recommend in recommendation:
+        if recommend in old_recommendation:
+          recommendation.remove(recommend)
+      recommendation += old_recommendation
+    if recommendation == []:
       recommendation = None
     if recommendation == None:
         student_data.update_one({"_id":student["_id"]},{"$set":{"bmi_category":bmi_category, "bmi":bmi}})
     else:
         student_data.update_one({"_id":student["_id"]},{"$set":{"bmi_category":bmi_category, "bmi":bmi,"recommendation":[recommendation]}}, upsert=True)
-
     print(bmi_category)
   
 def avg_data_class(standard):
@@ -137,4 +141,66 @@ def test():
       print("Updated")
     print(student)
 
-test()
+def single_user_recommendation(id):
+  #bmi calculator 
+  student = student_data.find_one({"_id":id})
+  print(student)
+  height = student["height"] # in cm
+  weight = student["weight"]
+  height = float(height)
+  weight = float(weight)
+  bmi = float(weight)/((float(height)/100)**2)
+  print(bmi)
+  bmi_category = ""
+  if bmi < 18.5:
+    bmi_category = "Underweight"
+    recommendation = [r["underweight"]["recommendation"]]
+  elif bmi >= 18.5 and bmi <= 24.9:
+    bmi_category = "Normal"
+    recommendation = []
+  elif bmi >= 25 and bmi <= 29.9:
+    bmi_category = "Overweight"
+    recommendation = [r["overweight"]["recommendation"]]
+  elif bmi >= 30:
+    bmi_category = "Obese"
+    recommendation = r["obese"]["recommendation"]
+  old_recommendation = [student["recommendation"]]
+  if recommendation != []:
+    for recommend in recommendation:
+      if recommend in old_recommendation:
+        recommendation.remove(recommend)
+    recommendation += old_recommendation
+  if recommendation == []:
+    recommendation = None
+  if recommendation == None:
+      student_data.update_one({"_id":student["_id"]},{"$set":{"bmi_category":bmi_category, "bmi":bmi}})
+  else:
+      student_data.update_one({"_id":student["_id"]},{"$set":{"bmi_category":bmi_category, "bmi":bmi,"recommendation":recommendation}}, upsert=True)
+  print(bmi_category)
+  #pulse and bp
+  student = student_data.find_one({"_id":id})
+  recommendation = []
+  pulse_category = "Normal"
+  pulse = student["blood"]["pulse"]
+  if int(pulse) > 100:
+    recommendation.append(r["high_pulse"]["recommendation"])
+    pulse_category = "High"
+  elif int(pulse) < 60:
+    recommendation.append(r["low_pulse"]["recommendation"])
+    pulse_category = "Low"
+  bp = student["blood"]["blood_pressure"]
+  bp = bp.split("/")
+  bp_category = "Normal"
+  if (int(bp[0]) >= 120) or (int(bp[1]) >= 80):
+    recommendation.append(r["high_bp"]["recommendation"])
+    bp_category = "High"
+  elif (int(bp[0]) <= 90) or (int(bp[1]) <= 60):
+    recommendation.append(r["low_bp"]["recommendation"])
+    bp_category = "Low"
+  if student["recommendation"] != []:
+    recommendation += student["recommendation"]
+  blood = student["blood"]
+  blood["pulse_category"] = pulse_category
+  blood["bp_category"] = bp_category
+  student_data.update_one({"_id":student["_id"]},{"$set":{"recommendation":recommendation, "blood":blood}}, upsert=True)
+  print("Updated")

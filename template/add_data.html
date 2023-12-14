@@ -1,0 +1,216 @@
+<html>
+<head>
+  <title>Add Data</title>
+</head>
+<body>
+  <div class="whole-box">
+    <div class="header">
+      <div class="main-navbar">
+      <span onclick="window.location.href = '/dashboard';"><b>HealthTrack</b></span>
+      </div>
+    </div>
+  <div class="container">
+  <h1>Add Data</h1>
+  <form action="/add_data" method="post">
+    <table>
+      <tr>
+        <td>Name</td>
+        <td><input type="text" name="name" /></td>
+      </tr>
+      <tr>
+        <td>Username</td>
+        <td><input type="text" name="username"/></td>
+      </tr>
+      <tr>
+        <td>Password</td>
+        <td><input type="password" name="password"/></td>
+      </tr>
+      <tr>
+        <td colspan="2"><b>General Details</b></td>
+      </tr>
+      <tr>
+        <td>Age</td>
+        <td><input type="number" name="age"/></td>
+      </tr>
+      <tr>
+        <td>Weight (kg)</td>
+        <td><input type="number" name="weight"/></td>
+      </tr>
+      <tr>
+        <td>Height (cm)</td>
+        <td><input type="number" name="height"/></td>
+      </tr>
+      <tr>
+        <td colspan="2"><b>Blood Details</b></td>
+      </tr>
+      <tr>
+        <td>Blood Group</td>
+        <td><input type="text" name="blood_group"/></td>
+      </tr>
+      <tr>
+        <td>Blood Pressure (xxx/yy)</td>
+        <td><input type="text" name="blood_pressure" regex="^[0-9]{2,3}\/[0-9]{2,3}$"/></td>
+      </tr>
+      <tr>
+        <td>Pulse</td>
+        <td><input type="number" name="pulse"/></td>
+      </tr>
+      <tr>
+        <td>Haemoglobin</td>
+        <td><input type="number" name="haemoglobin"/></td>
+      </tr>
+      <tr>
+        <td colspan="2"><b>Tooth Deatils</b></td>
+      </tr>
+      <tr>
+        <td>Tooth Cavity</td>
+        <td><select name="tooth_cavity">
+          <option value="yes">yes</option>
+          <option value="no" selected="selected">no</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td>Gum Inflamation</td>
+        <td><select name="gum_inflamation">
+          <option value="yes">yes</option>
+          <option value="no" selected="selected">no</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td>Tarter</td>
+        <td><select name="tarter">
+          <option value="yes">yes</option>
+          <option value="no" selected="selected">no</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td>Gum Bleeding</td>
+        <td><select name="gum_bleeding">
+          <option value="yes">yes</option>
+          <option value="no" selected="selected">no</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td>Plaque</td>
+        <td><select name="plaque">
+          <option value="yes">yes</option>
+          <option value="no" selected="selected">no</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td>Stains</td>
+        <td><Select name="stains">
+          <option value="yes">yes</option>
+          <option value="no" selected="selected">no</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td colspan="2"><b>Other Details</b></td>
+      <tr>
+        <td>Vision (6/6) </td>
+        <td><input type="text" name="vision"/></td>
+      </tr>
+      <tr>
+        <td>Ear</td>
+        <td> <select name="ear">
+          <option value="Normal">Normal</option>
+          <option value="Abnormal">Abnormal</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td>Squint</td>
+        <td><select name="squint">
+          <option value="yes">yes</option>
+          <option value="no" selected="selected">no</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td>Throat</td>
+        <td><select name="throat">
+          <option value="Normal">Normal</option>
+          <option value="Abnormal">Abnormal</option>
+        </select></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><input type="submit" name="submit" value="Add" /></td>
+      </tr>
+    </table>
+  </form>
+  </div>
+  </div>
+</body>
+<style>
+  html {
+      overflow: hidden;
+    }
+    body {
+      font-family: ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+      background-image: url("/static/blue-white background.webp");
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: cover;
+      backdrop-filter: blur(30px);
+      color: white;
+      margin: 0;
+    }
+    ::placeholder {
+      color: rgba(255, 255, 255, 0.70);
+    }
+   
+    .whole-box{
+      height: 100vh;
+      overflow-y: scroll;
+    }
+    .header {
+      text-align: left;
+      font-size: 45px;
+      background-color: #68b0e430;
+      padding: 5px;
+      height: 70px;
+      border-bottom: 0.1px solid #68b0e489;
+      display: flex; 
+      
+    }
+    .main-navbar {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+    .header span {
+      padding-left: 15px;
+      cursor: default;
+      user-select: none;
+    }
+    .container {
+      color: black;
+      padding-left: 40px;
+      padding-top: 10px;
+    }
+    .container table td {
+      color: black;
+      font-size: 25px;
+    }
+    .container table td input {
+      width: 100%;
+      border-radius: 5px;
+      border: 0.1px solid #68b0e489;
+      padding-left: 5px;
+      padding-right: 5px;
+      padding-top: 2.5px;
+      padding-bottom: 2.5px;
+      font-size: 25px;
+    }
+    .container table td select {
+      width: 100%;
+      border-radius: 5px;
+      border: 0.1px solid #68b0e489;
+      padding-left: 5px;
+      padding-right: 5px;
+      padding-top: 2.5px;
+      padding-bottom: 2.5px;
+      font-size: 25px;
+    }
+</style>
+</html>
+

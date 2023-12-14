@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, session, redirect
 import pymongo
 from bson import ObjectId
+import processes
 
 app = Flask(" ",template_folder=r"template", static_folder=r"static")
 client = pymongo.MongoClient("mongodb+srv://HealthTrack:HealthTrack@cluster0.azdhcau.mongodb.net/?retryWrites=true&w=majority")
@@ -87,5 +88,58 @@ def logout():
     return redirect("/auth")
 
 
+@app.route("/add_data", methods=["GET","POST"])
+def add_data():
+    if session.get("user") != "admin":
+        return redirect("/auth")
+    if request.method == "POST":
+        name= request.form.get("name")
+        username = request.form.get("username")
+        password = request.form.get("password")
+        age = request.form.get("age")
+        height = request.form.get("height")
+        weight = request.form.get("weight")
+        blood_group = request.form.get("blood_group")
+        blood_pressure = request.form.get("blood_pressure")
+        pulse = request.form.get("pulse")
+        haemoglobin = request.form.get("haemoglobin")
+        tooth_cavity = request.form.get("tooth_cavity")
+        gum_inflamation = request.form.get("gum_inflamation")
+        tarter = request.form.get("tarter")
+        gum_bleeding = request.form.get("gum_bleeding")
+        plaque = request.form.get("plaque")
+        stains = request.form.get("stains")
+        vision = request.form.get("vision")
+        ear = request.form.get("ear")
+        squint = request.form.get("squint")
+        throat = request.form.get("throat")
+        sd = student_data.insert_one({
+            "name": name,
+            "class": "-",
+            "age": age,
+            "weight": weight,
+            "height": height,
+            "blood" :{"blood_group": blood_group,"blood_pressure": blood_pressure,"pulse": pulse, "haemoglobin": haemoglobin},
+            "oral": {"tooth_cavity": tooth_cavity,"gum_inflamation": gum_inflamation,"tarter": tarter,"gum_bleeding": gum_bleeding,"plaque": plaque,"stains": stains},
+            "vision": vision,
+            "ear": ear,
+            "squint": squint,
+            "throat": throat,
+            "allergies": [],
+            "recommendation": []
+        })
+        print(sd.inserted_id)
+        id = sd.inserted_id
+        user_data.insert_one({
+            "user": username.lower(),
+            "password": password,
+            "user_id": id
+        })
+        processes.single_user_recommendation(id)
+        return redirect("/student_data?id="+str(id))
+    return render_template("add_data.html")
+
+
 
 app.run(host="0.0.0.0", port=8080, debug=True)
+
