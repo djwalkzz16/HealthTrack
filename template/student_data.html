@@ -1,6 +1,7 @@
 <html>
   <head>
     <title>Student Data</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
     <div class="whole-box">
@@ -8,7 +9,7 @@
       <div class="main-navbar">
       <span onclick="window.location.href = '/dashboard';"><b>HealthTrack</b></span>
       </div>
-    <button class="logout-btn">LogOut</button>
+    <button onclick="window.location.href = '/logout';" class="logout-btn">LogOut</button>
     </div>
     <div class="details">
       <h1 id="name">{{student["name"]}}</h1>
@@ -40,9 +41,7 @@
       <h2>General</h2>
       <span>Class: <b id="class"> {{student["class"]}} </b></span><br>
       <span>Age: <b id="age"> {{student["age"]}}years </b></span><br>
-
       <span>Height: <b id="height"> {{student["height"]}}cm </b></span><br>
-
       <span>Weight: <b id="weight"> {{student["weight"]}}kg </b></span><br>
       <span>BMI: <b id="bmi"> {{student["bmi"]}} </b></span><br>
       <span>BMI Category: <b id="bmi-category" class="bmi-category-value"> {{student["bmi_category"]}} </b></span><br>
@@ -82,9 +81,14 @@
       {% endfor %}
       </ol>
       {% if student["recommendation"] == [] %}
-        <span>Continue to maintain your healthy lifestyle and exercise on a regular basis.</span><br>
+        <span>No recommendations</span><br>
       {% endif %}
-    </div>  
+    </div>
+    <center>
+    <div class="chart-container">
+      <canvas id="bmiChart" width="500" height="300"></canvas>
+    </div> 
+  </center>
     </div>
     <style>
       html {
@@ -242,45 +246,105 @@
     flex: 1 1 100%;
   }
 }
+.chart-container {
+      width: 80%;
+      margin: auto;
+    }
+
+    canvas {
+      border: 1px solid #ddd;
+      margin-top: 20px;
+    }
     </style>
-    <script src="https://unpkg.com/@popperjs/core@2"></script>
-    <script src="https://unpkg.com/tippy.js@6"></script>
     <script>
-      tippy("#bmi-category", {
-        content: "Normal range: 18.5-24.9",
-        placement: "right"        
-      })
-      tippy("#pulse", {
-        content: "Normal range: 60-100",
-        placement: "right"        
-      })
-    tippy("#blood-pressure", {
-        content: "Normal range: 120/80 - 90/60",
-        placement: "right"        
-      })
       if (`{{student["bmi_category"]}}`=="Underweight") {
       document.getElementsByClassName("bmi-category-value")[0].style.color = "#FF0000";
+      var data = {
+      labels: ['Underweight',"You" ,'Normal', 'Overweight', 'Obese'],
+      datasets: [{
+        label: 'BMI Categories',
+        borderColor: [ '#FF0000',"#000000", "#00FF00","#FFFF00","#FF0000"],
+        borderWidth: 2,
+        pointRadius: 5,
+        pointBackgroundColor: ['#FF0000',"#000000" , "#00FF00","#FFFF00","#FF0000"],
+        data: [ 5,{{student["bmi"] | int}},18.5, 25, 30],
+        fill: true,
+
+      }]
+    };
     }
     else if (`{{student["bmi_category"]}}`=="Normal") {
       document.getElementsByClassName("bmi-category-value")[0].style.color = "#00FF00";
+      var data = {
+      labels: ['Underweight','Normal', "You" ,'Overweight', 'Obese'],
+      datasets: [{
+        label: 'BMI Categories',
+        borderColor: ['#FF0000', "#00FF00", "#000000","#FFFF00","#FF0000"],
+        borderWidth: 2,
+        pointRadius: 5,
+        pointBackgroundColor: ['#FF0000', "#00FF00","#000000" ,"#FFFF00","#FF0000"],
+        data: [ 5,18.5, {{student["bmi"] | int}},25, 30],
+        fill: true,
+
+      }]
+    };
     }
     else if (`{{student["bmi_category"]}}`=="Overweight") {
-      document.getElementsByClassName("bmi-category-value")[0].style.color = "#FF4500";
+      document.getElementsByClassName("bmi-category-value")[0].style.color = "#FFFF00";
+      var data = {
+      labels: ['Underweight','Normal','Overweight', "You" , 'Obese'],
+      datasets: [{
+        label: 'BMI Categories',
+        borderColor: ['#FF0000', "#00FF00", "#FFFF00","#000000","#FF0000"],
+        borderWidth: 2,
+        pointRadius: 5,
+        pointBackgroundColor: ['#FF0000', "#00FF00","#FFFF00","#000000" ,"#FF0000"],
+        data: [ 5,18.5, 25, {{student["bmi"] | int}},30],
+        fill: true,
+
+      }]
+    };
     }
-    else if (`{{student["bmi_category"]}}`=="Obesity") {
+    else if (`{{student["bmi_category"]}}`=="Obese") {
       document.getElementsByClassName("bmi-category-value")[0].style.color = "#FF0000";
+      var data = {
+      labels: ['Underweight','Normal', 'Overweight', 'Obese',"You" ],
+      datasets: [{
+        label: 'BMI Categories',
+        borderColor: [ '#FF0000', "#00FF00","#FFFF00","#FF0000","#000000"],
+        borderWidth: 2,
+        pointRadius: 5,
+        pointBackgroundColor: [ ,'#FF0000', "#00FF00","#FFFF00","#FF0000","#000000"],
+        data: [ 5,18.5, 25, 30,{{student["bmi"] | int}}],
+        fill: true,
+
+      }]
+    };
     }
-    if (`{{student["blood"]["pulse_category"]}}` == "High") {
-      document.getElementById("pulse").style.color = "#FF0000";
-    }
-    else if (`{{student["blood"]["pulse_category"]}}` == "Low") {
-      document.getElementById("pulse").style.color = "#FF0000";
-    }
-    if (`{{student["blood"]["bp_category"]}}` == "High") {
-      document.getElementById("blood-pressure").style.color = "#FF0000";
-    }
-    else if (`{{student["blood"]["bp_category"]}}` == "Low") {
-      document.getElementById("blood-pressure").style.color = "#FF0000";
-    }
+    // Sample data for the BMI chart
+    
+
+    // Configuration options
+    var options = {
+      responsive: false,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 35,
+        }
+      }
+    };
+
+    // Get the canvas element
+    var ctx = document.getElementById('bmiChart').getContext('2d');
+
+    // Create the chart
+    var bmiChart = new Chart(ctx, {
+      type: 'line',
+      data: data,
+      options: options
+    });
+  </script>
     </script>
 </html>

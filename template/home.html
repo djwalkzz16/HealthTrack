@@ -8,9 +8,7 @@
       <div class="main-navbar">
       <span onclick="window.location.href = '/dashboard';"><b>HealthTrack</b></span>
       </div>
-
     <button class="logout-btn" onclick="window.location.href = '/logout'">LogOut</button>
-
     </div>
     <div class="details">
       <h1 id="name">{{student["name"]}}</h1>
@@ -243,21 +241,7 @@
   }
 }
     </style>
-    <script src="https://unpkg.com/@popperjs/core@2"></script>
-    <script src="https://unpkg.com/tippy.js@6"></script>
     <script>
-      tippy("#bmi-category", {
-        content: "Normal range: 18.5-24.9",
-        placement: "right"        
-      })
-      tippy("#pulse", {
-        content: "Normal range: 60-100",
-        placement: "right"        
-      })
-    tippy("#blood-pressure", {
-        content: "Normal range: 120/80 - 90/60",
-        placement: "right"        
-      })
       if (`{{student["bmi_category"]}}`=="Underweight") {
       document.getElementsByClassName("bmi-category-value")[0].style.color = "#FF0000";
     }
@@ -265,22 +249,10 @@
       document.getElementsByClassName("bmi-category-value")[0].style.color = "#00FF00";
     }
     else if (`{{student["bmi_category"]}}`=="Overweight") {
-      document.getElementsByClassName("bmi-category-value")[0].style.color = "#FF4500";
+      document.getElementsByClassName("bmi-category-value")[0].style.color = "#FFFF00";
     }
-    else if (`{{student["bmi_category"]}}`=="Obesity") {
+    else if (`{{student["bmi_category"]}}`=="Obese") {
       document.getElementsByClassName("bmi-category-value")[0].style.color = "#FF0000";
-    }
-    if (`{{student["blood"]["pulse_category"]}}` == "High") {
-      document.getElementById("pulse").style.color = "#FF0000";
-    }
-    else if (`{{student["blood"]["pulse_category"]}}` == "Low") {
-      document.getElementById("pulse").style.color = "#FF0000";
-    }
-    if (`{{student["blood"]["bp_category"]}}` == "High") {
-      document.getElementById("blood-pressure").style.color = "#FF0000";
-    }
-    else if (`{{student["blood"]["bp_category"]}}` == "Low") {
-      document.getElementById("blood-pressure").style.color = "#FF0000";
     }
     </script>
 </html>
