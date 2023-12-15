@@ -69,10 +69,12 @@ def home():
 
 @app.route("/student_data")
 def student_data_():
-    if session.get("user") != "admin":
-        return redirect("/auth")
     student_id = request.args.get("id")
     student = student_data.find_one({"_id": ObjectId(student_id)})
+    if session.get("user") != "admin":
+        return redirect("/auth")
+    elif student["class"] == "-":
+        pass
     return render_template("student_data.html", student=student)
 
 
@@ -90,8 +92,6 @@ def logout():
 
 @app.route("/add_data", methods=["GET","POST"])
 def add_data():
-    if session.get("user") != "admin":
-        return redirect("/auth")
     if request.method == "POST":
         name= request.form.get("name")
         username = request.form.get("username")
